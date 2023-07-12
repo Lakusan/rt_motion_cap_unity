@@ -38,3 +38,6 @@ class Settings:
 
     def get_cam_config_fps(self) -> int:
         return self.cam_fps
+
+    def set_cams(self, cameras) -> None:
+        self.available_cams_index = cameras.copy()
