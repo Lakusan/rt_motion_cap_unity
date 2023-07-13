@@ -88,7 +88,7 @@ class Pose_Estimation(threading.Thread):
                     
                     if (self.pipe == None and time.time() - self.timeSinceCheckedConnection >= 1):
                         try:
-                            self.pipe = open(r'\\.\pipe\UnityMediaPipeBody', 'r+b', 0)
+                            self.pipe = open(r'\\.\pipe\acsaai2023', 'r+b', 0)
                             print("-> Connected")
                         except FileNotFoundError:
                             print("pipe: Wait for Unity")
