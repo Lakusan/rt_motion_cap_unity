@@ -4,6 +4,13 @@ import time
 from settings import Settings
 from pose_estimation import Pose_Estimation
 
+"""
+Handle frame stream from wecam with opencv in thread
+runs pose estimation thread
+reads custom config params (webcam)
+sets frame and ret in pose_estimation thread.
+
+"""
 
 class CaptureThread(threading.Thread):
     settings = Settings()
@@ -50,6 +57,7 @@ class CaptureThread(threading.Thread):
         while not self.settings.kill_all_threads and self.cap.isOpened():
             self.ret, self.frame = self.cap.read()
             if self.ret:
+                # set frame on pose estimation thread via expose props/fields
                 self.pose_estimation.frame = self.frame.copy()
                 self.pose_estimation.ret = self.ret
                 if self.settings.debug_mode:

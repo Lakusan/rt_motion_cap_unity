@@ -14,7 +14,8 @@ WIDTH = 640
 HEIGHT = 480
 
 # media pipe config params
-# [0, 2] Higher numbers are more precise, but also cost more performance. The demo video used 1.
+# [0, 2] Model selection - the higher the better the results but with lesser fps
+
 MODEL_COMPLEXITY = 0
 MIN_DETECTION_CONFIDENCE = 0.80
 MIN_TRACKING_CONFIDENCE = 0.5

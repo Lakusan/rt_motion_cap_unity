@@ -8,14 +8,17 @@ import cv2
 
 if __name__ == "__main__":
     print("Load Settings")
+    # dataclass
     settings = Settings()
     print("---> Settings Loaded")
 
     print("Init Camera Manager")
+    # manages usb cams
     cam_manager = CameraManager()
     print("---> Camera Manager initialized")
 
     print("find cams")
+    # finds all usb cams via opencv
     cam_manager.find_available_cameras()
     if settings.available_cams_index != None:
         print(f"len cams: {len(settings.available_cams_index)}")
@@ -25,5 +28,6 @@ if __name__ == "__main__":
         print(f"len cams: {len(settings.available_cams_index)}")
     print("Init Capturing")
     print("---> Capturing init")
+    #start capturing images
     capture = CaptureThread()
     capture.start()

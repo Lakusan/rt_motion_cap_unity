@@ -21,6 +21,10 @@ import struct
 
 from settings import Settings
 
+"""
+uses mediapipe to estimate the human pose
+sends data then to unity
+"""
 
 class Pose_Estimation(threading.Thread):
     data: str = ""
@@ -34,14 +38,14 @@ class Pose_Estimation(threading.Thread):
     def run(self):
         mp_drawing = mp.solutions.drawing_utils
         mp_pose = mp.solutions.pose
-
+        # thread is running
         self.settings.pose_estimation_is_running = True
 
         while not self.settings.kill_all_threads and not self.ret:
             print("pose etimation: waiting for frames")
             time.sleep(0.5)
             print("pose estimation: start processing frames")
-
+        # init modiapipe with config params from settings data class
         with mp_pose.Pose(
             min_detection_confidence=self.settings.get_detection_confidence(),
             min_tracking_confidence=self.settings.get_tracking_confidence(),
@@ -81,7 +85,7 @@ class Pose_Estimation(threading.Thread):
                             )
                         cv2.imshow("Results pose_estimation", frame)
                         cv2.waitKey(1)
-
+                    
                     if (self.pipe == None and time.time() - self.timeSinceCheckedConnection >= 1):
                         try:
                             self.pipe = open(r'\\.\pipe\UnityMediaPipeBody', 'r+b', 0)
@@ -91,9 +95,8 @@ class Pose_Estimation(threading.Thread):
                             self.pipe = None
                         
                         self.timeSinceCheckedConnection = time.time()
-
+                    # pip for data transfer
                     if self.pipe != None:
-                        print("send pose")
                         self.data = ""
                         i = 0
                         if results.pose_world_landmarks:
