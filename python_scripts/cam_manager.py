@@ -7,10 +7,7 @@ import cv2
 class CameraManager:
     _instance = None
 
-    last_frame: cv2.Mat = None
-    current_frame: cv2.Mat = None
     settings = Settings()
-    camera_matrix: cv2.Mat
 
     def __new__(cls):
         if cls._instance is None:
@@ -32,9 +29,3 @@ class CameraManager:
             return True
         else:
             raise Exception("No cameras found")
-
-    def get_available_cameras(self) -> List[int]:
-        return self.cameras
-
-    def get_camera_index(self) -> int:
-        return self.cameraIndex
