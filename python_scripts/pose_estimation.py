@@ -63,7 +63,7 @@ class Pose_Estimation(threading.Thread):
                     t_f = time.time()
 
                     if self.settings.get_debug_mode():
-                        if time.time() - self.timeSincePostStatistics >= 1:
+                        if time.time() - self.timeSincePostStatistics >= 5:
                             print("approx max FPS pose estimation: %f" % (1 / (t_f - t_i)))
                             self.timeSincePostStatistics = time.time()
 
@@ -85,11 +85,12 @@ class Pose_Estimation(threading.Thread):
                     if (self.pipe == None and time.time() - self.timeSinceCheckedConnection >= 1):
                         try:
                             self.pipe = open(r'\\.\pipe\UnityMediaPipeBody', 'r+b', 0)
+                            print("-> Connected")
                         except FileNotFoundError:
                             print("pipe: Wait for Unity")
                             self.pipe = None
                         
-                    self.timeSinceCheckedConnection = time.time()
+                        self.timeSinceCheckedConnection = time.time()
 
                     if self.pipe != None:
                         print("send pose")
@@ -104,11 +105,12 @@ class Pose_Estimation(threading.Thread):
                                     hand_world_landmarks.landmark[i].y,
                                     hand_world_landmarks.landmark[i].z,
                                 )
-                        print(s)
+                        print(self.data)
                         s = self.data.encode("ascii")
                         try:
                             self.pipe.write(struct.pack("I", len(s)) + s)
                             self.pipe.seek(0)
+                            print("--> Send Data" )
                         except Exception as e:
                             print("Failed to write to pipe. Unity not reachable")
                             self.pipe = None

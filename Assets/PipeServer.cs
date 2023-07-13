@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 
 using System.IO;
@@ -7,27 +8,25 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-// 
+/* Currently very messy because both the server code and hand-drawn code is all in the same file here.
+ * But it is still fairly straightforward to use as a reference/base.
+ */
 
-public class Server : MonoBehaviour
+public class PipeServer : MonoBehaviour
 {
-    // game object vars
     public Transform rParent;
     public Transform lParent;
     public GameObject landmarkPrefab;
     public GameObject linePrefab;
     public GameObject headPrefab;
-    // config
     public bool enableHead = true;
     public float multiplier = 10f;
     public float landmarkScale = 1f;
     public float maxSpeed = 50f;
     public float debug_samplespersecond;
 
-    // Python Script data stream
     NamedPipeServerStream server;
 
-    // Constants for Landmarks from mediapipe to keep track of them
     const int LANDMARK_COUNT = 33;
     public enum Landmark
     {
@@ -67,7 +66,6 @@ public class Server : MonoBehaviour
     }
     const int LINES_COUNT = 11;
 
-    // store values over time accumulated -> posVectors
     public struct AccumulatedBuffer
     {
         public Vector3 value;
@@ -219,10 +217,13 @@ public class Server : MonoBehaviour
 
     private void UpdateBody(Body b)
     {
+        print("Update Body");
+
         for (int i = 0; i < LANDMARK_COUNT; ++i)
         {
             if (b.positionsBuffer[i].accumulatedValuesCount < samplesForPose)
                 continue;
+            // b.instances[i].transform.localPosition = b.positionsBuffer[i] / (float)b.samplesCounter * multiplier;
             b.localPositionTargets[i] = b.positionsBuffer[i].value / (float)b.positionsBuffer[i].accumulatedValuesCount * multiplier;
             b.positionsBuffer[i] = new AccumulatedBuffer(Vector3.zero, 0);
         }
@@ -236,19 +237,21 @@ public class Server : MonoBehaviour
 
     void Run()
     {
-        // open pipeline stream to python script
-        server = new NamedPipeServerStream("acsqaai2023", PipeDirection.InOut, 99, PipeTransmissionMode.Message);
+        // Open the named pipe.
+        server = new NamedPipeServerStream("UnityMediaPipeBody", PipeDirection.InOut, 99, PipeTransmissionMode.Message);
 
-        print("Connecting ...");
+        print("Waiting for connection...");
         server.WaitForConnection();
 
-        print("Connected to python");
+        print("Connected.");
         var br = new BinaryReader(server);
 
         while (true)
         {
             try
             {
+                print("Data");
+
                 Body h = body;
                 var len = (int)br.ReadUInt32();
                 var str = new string(br.ReadChars(len));
@@ -269,8 +272,8 @@ public class Server : MonoBehaviour
             }
             catch (EndOfStreamException)
             {
-                // break if disconnect
-                break;           
+                // if disconnected
+                break;                    
             }
         }
 
