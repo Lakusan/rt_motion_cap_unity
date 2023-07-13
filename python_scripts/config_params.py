@@ -15,8 +15,11 @@ HEIGHT = 480
 
 # media pipe config params
 # [0, 2] Model selection - the higher the better the results but with lesser fps
+# 3 BlazePose GHUM Heavy
+# 2 BlazePose GHUM Full
+# 1 BlazePose GHUM Lite
 
-MODEL_COMPLEXITY = 0
+MODEL_COMPLEXITY = 1
 MIN_DETECTION_CONFIDENCE = 0.80
 MIN_TRACKING_CONFIDENCE = 0.5
 STATIC_IMAGE_MODE = False
