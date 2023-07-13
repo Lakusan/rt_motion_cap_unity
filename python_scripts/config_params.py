@@ -5,19 +5,23 @@ DEBUG = True
 # index of usb webcam device -> 0 = internal default cam; 1 -> additional via usb connected cam
 WEBCAM_INDEX = 0
 # Activate custom cam settings
-USE_CUSTOM_CAM_SETTINGS = False
-# desired fps -> most cams support 30 FPS <- Default
+USE_CUSTOM_CAM_SETTINGS = True
+# desired fps -> most cams support 30 FPS
 # if set to 0 device defaults are used
-FPS = 0
+FPS = 60
 # force image resolution
-WIDTH = 0
-HEIGHT = 0
+WIDTH = 640
+HEIGHT = 480
 
 # media pipe config params
 # [0, 2] Higher numbers are more precise, but also cost more performance. The demo video used 1.
-MODEL_COMPLEXITY = 1
+MODEL_COMPLEXITY = 0
+MIN_DETECTION_CONFIDENCE = 0.80
+MIN_TRACKING_CONFIDENCE = 0.5
+STATIC_IMAGE_MODE = False
+ENABLE_SEGMENTATION = True
 
 # Interals
 # used to kill all threads before app exits
-# gets used automaically -> dont change
+# gets used automaically -> change to stopf running threads
 KILL_THREADS = False
