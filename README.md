@@ -15,7 +15,7 @@ mediapipe
 
 ## Setup
 - clone project
-- in python_scripts install dependencies 
+- in python_scripts install dependencies [$ pip install -r requirements.txt]
 
 ## Start
 1. Python
