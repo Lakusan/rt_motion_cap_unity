@@ -8,10 +8,8 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-/* Currently very messy because both the server code and hand-drawn code is all in the same file here.
- * But it is still fairly straightforward to use as a reference/base.
- */
 
+// handles NamedPipeServer to exchange data with python
 public class PipeServer : MonoBehaviour
 {
     public Transform rParent;
@@ -26,7 +24,7 @@ public class PipeServer : MonoBehaviour
     public float debug_samplespersecond;
 
     NamedPipeServerStream server;
-
+    // Landmark Fields for data from mediapipe
     const int LANDMARK_COUNT = 33;
     public enum Landmark
     {
@@ -65,7 +63,7 @@ public class PipeServer : MonoBehaviour
         RIGHT_FOOT_INDEX = 32
     }
     const int LINES_COUNT = 11;
-
+    // buffer data
     public struct AccumulatedBuffer
     {
         public Vector3 value;
@@ -76,7 +74,8 @@ public class PipeServer : MonoBehaviour
             accumulatedValuesCount = ac;
         }
     }
-
+    // handles data processinf and coord transforms
+    // creates Body primitives from prefabs
     public class Body
     {
         public Transform parent;
@@ -111,6 +110,7 @@ public class PipeServer : MonoBehaviour
                 head.transform.localScale = headPrefab.transform.localScale;
             }
         }
+        // Update connection lines between primtives
         public void UpdateLines()
         {
             lines[0].positionCount = 4;
@@ -174,13 +174,14 @@ public class PipeServer : MonoBehaviour
             lines[10].SetPosition(3, Position((Landmark)2));
             lines[10].SetPosition(4, Position((Landmark)7));
         }
-
+        // angle transformation from data to unity coords
         public float GetAngle(Landmark referenceFrom, Landmark referenceTo, Landmark from, Landmark to)
         {
             Vector3 reference = (instances[(int)referenceTo].transform.position - instances[(int)referenceFrom].transform.position).normalized;
             Vector3 direction = (instances[(int)to].transform.position - instances[(int)from].transform.position).normalized;
             return Vector3.SignedAngle(reference, direction, Vector3.Cross(reference, direction));
         }
+        // calc distance beween landmakrs
         public float Distance(Landmark from, Landmark to)
         {
             return (instances[(int)from].transform.position - instances[(int)to].transform.position).magnitude;
@@ -205,7 +206,7 @@ public class PipeServer : MonoBehaviour
     private void Start()
     {
         body = new Body(lParent, landmarkPrefab, linePrefab, landmarkScale, enableHead ? headPrefab : null);
-
+        // threading
         Thread t = new Thread(new ThreadStart(Run));
         t.Start();
 
@@ -223,7 +224,6 @@ public class PipeServer : MonoBehaviour
         {
             if (b.positionsBuffer[i].accumulatedValuesCount < samplesForPose)
                 continue;
-            // b.instances[i].transform.localPosition = b.positionsBuffer[i] / (float)b.samplesCounter * multiplier;
             b.localPositionTargets[i] = b.positionsBuffer[i].value / (float)b.positionsBuffer[i].accumulatedValuesCount * multiplier;
             b.positionsBuffer[i] = new AccumulatedBuffer(Vector3.zero, 0);
         }
@@ -237,8 +237,8 @@ public class PipeServer : MonoBehaviour
 
     void Run()
     {
-        // Open the named pipe.
-        server = new NamedPipeServerStream("UnityMediaPipeBody", PipeDirection.InOut, 99, PipeTransmissionMode.Message);
+        // Open the  NamedPipeServerStream
+        server = new NamedPipeServerStream("acsaai2023", PipeDirection.InOut, 99, PipeTransmissionMode.Message);
 
         print("Waiting for connection...");
         server.WaitForConnection();
@@ -255,7 +255,7 @@ public class PipeServer : MonoBehaviour
                 Body h = body;
                 var len = (int)br.ReadUInt32();
                 var str = new string(br.ReadChars(len));
-
+                // read incomming data string 
                 string[] lines = str.Split('\n');
                 foreach (string l in lines)
                 {
@@ -286,3 +286,7 @@ public class PipeServer : MonoBehaviour
         server.Dispose();
     }
 }
+
+
+
+

@@ -9,9 +9,10 @@ Representation of the joints is then shown with primitives in unity.
 
 ## Versions
 Unity Engine 2022.3.4f1 LTS
+python 3.11.4
 numpy-1.25.1 
 opencv-python-4.8.0.74
-mediapipe
+mediapipe 0.10.2
 
 ## Setup
 - clone project
