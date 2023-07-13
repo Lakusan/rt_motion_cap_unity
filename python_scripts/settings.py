@@ -7,25 +7,35 @@ from typing import List
 # app configuration file
 import config_params
 
+import time
+
 
 @dataclass
 class Settings:
     """_summary_
-        Dataclass as singleton to have one source of truth for
-        app settings and config.
-        Reads params of config-file: config_params.py
-    Returns:
-        _type_: _description_
+    Dataclass as singleton to have one source of truth for
+    app settings and config.
+    Reads params of config-file: config_params.py
     """
 
+    # config params mapping
     debug_mode: bool = config_params.DEBUG
     current_cam_index: int = config_params.WEBCAM_INDEX
     available_cams_index: List[int] = None
     custom_config: bool = config_params.USE_CUSTOM_CAM_SETTINGS
     cam_config_fps: int = config_params.FPS
     cam_config_width: int = config_params.WIDTH
-    cam_config_heigt: int = config_params.HEIGHT
+    cam_config_height: int = config_params.HEIGHT
     model_config_complexity: int = config_params.MODEL_COMPLEXITY
+    capuring_is_running: bool = False
+    pose_estimation_is_running: bool = False
+    kill_all_threads: bool = config_params.KILL_THREADS
+    min_detection_confidence = config_params.MIN_DETECTION_CONFIDENCE
+    min_tracking_confidence = config_params.MIN_TRACKING_CONFIDENCE
+    static_image_mode = config_params.STATIC_IMAGE_MODE
+    enable_segmentation = config_params.ENABLE_SEGMENTATION
+    frame = None
+    ret: bool = None
 
     instance = None
 
@@ -90,7 +100,23 @@ class Settings:
         Returns:
             int: FPS configured in config_params
         """
-        return self.cam_fps
+        return self.cam_config_fps
+
+    def get_cam_config_width(self) -> int:
+        """_summary_
+            gets configured width from config
+        Returns:
+            int: FPS configured in config_params
+        """
+        return self.cam_config_width
+
+    def get_cam_config_height(self) -> int:
+        """_summary_
+            gets configured height from config
+        Returns:
+            int: FPS configured in config_params
+        """
+        return self.cam_config_height
 
     def set_cams(self, cameras) -> None:
         """_summary_
@@ -99,3 +125,37 @@ class Settings:
             cameras (List[int]): List of cam indexes
         """
         self.available_cams_index = cameras.copy()
+
+    def toggle_thread_capturing_state(self) -> None:
+        if self.capuring_is_running:
+            self.capuring_is_running = False
+            self.kill_all_threads = True
+        else:
+            self.capuring_is_running = True
+
+    def toggle_thread_pose_estimation_state(self) -> None:
+        if self.pose_estimation_is_running:
+            self.pose_estimation_is_running = False
+            self.kill_all_threads = True
+        else:
+            self.pose_estimation_is_running = True
+
+    def get_model_config_complexity(self):
+        return self.model_config_complexity
+
+    def kill_all(self) -> None:
+        self.kill_all_threads = True
+        time.sleep(2)
+        exit()
+
+    def get_detection_confidence(self) -> float:
+        return self.min_detection_confidence
+
+    def get_tracking_confidence(self) -> float:
+        return self.min_tracking_confidence
+
+    def get_image_mode(self) -> bool:
+        return self.static_image_mode
+
+    def get_segmentation(self) -> bool:
+        return self.enable_segmentation
