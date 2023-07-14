@@ -1,0 +1,94 @@
+@startuml
+
+class CaptureThread {
+    - settings: Settings
+    - cap: cv2.VideoCapture
+    - ret: bool
+    - counter: int
+    - timer: float
+    - cam_index: int
+    - frame: cv2.Mat
+    - pose_estimation: Pose_Estimation
+    + run(): None
+}
+
+class CameraManager {
+    - _instance
+    - settings: Settings
+    - cameras: List[int]
+    + find_available_cameras(): bool
+}
+
+class Pose_Estimation {
+    - data: str
+    - pipe
+    - timeSinceCheckedConnection: int
+    - timeSincePostStatistics: int
+    - settings: Settings
+    - frame: cv2.Mat
+    - ret: bool
+    + run(): None
+}
+
+class Settings {
+    - debug_mode: bool
+    - current_cam_index: int
+    - available_cams_index: List[int]
+    - custom_config: bool
+    - cam_config_fps: int
+    - cam_config_width: int
+    - cam_config_height: int
+    - model_config_complexity: int
+    - capuring_is_running: bool
+    - pose_estimation_is_running: bool
+    - kill_all_threads: bool
+    - min_detection_confidence
+    - min_tracking_confidence
+    - static_image_mode
+    - enable_segmentation
+    - frame
+    - ret: bool
+    - instance
+    + get_debug_mode(): bool
+    + get_current_cam_index(): int
+    + set_current_cam_index(index): None
+    + get_available_cams_index(): List[int]
+    + is_custom_config(): bool
+    + get_cam_config_fps(): int
+    + get_cam_config_width(): int
+    + get_cam_config_height(): int
+    + set_cams(cameras): None
+    + toggle_thread_capturing_state(): None
+    + toggle_thread_pose_estimation_state(): None
+    + get_model_config_complexity()
+    + kill_all(): None
+    + get_detection_confidence(): float
+    + get_tracking_confidence(): float
+    + get_image_mode(): bool
+    + get_segmentation(): bool
+}
+
+CaptureThread --> Settings
+CaptureThread --> Pose_Estimation
+CaptureThread --> cv2.VideoCapture
+CaptureThread --> cv2.Mat
+CaptureThread --> time
+
+CameraManager --> Settings
+CameraManager --> cv2.VideoCapture
+CameraManager --> List[int]
+CameraManager --> cv2.Mat
+CameraManager --> time
+
+Pose_Estimation --> Settings
+Pose_Estimation --> threading.Thread
+Pose_Estimation --> cv2.Mat
+Pose_Estimation --> mediapipe
+Pose_Estimation --> struct
+Pose_Estimation --> cv2.destroyAllWindows
+
+Settings --> config_params
+Settings --> dataclasses
+Settings --> List[int]
+
+@enduml
