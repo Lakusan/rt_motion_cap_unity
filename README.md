@@ -57,7 +57,6 @@ Representation of the joints is then shown with primitives in unity.
         <ul>
             <li style="padding: 5px; margin: 5px;">Left side real-time Pose estimation on webcam images</li>
             <li style="padding: 5px; margin: 5px;">Right Side: Landmark to Pose Rendering</li>
-            <li style="padding: 5px; margin: 5px;">Anchor Placement as Navigation Target (green cube)</li>
         </ul>
     </div>
     </div>
@@ -79,8 +78,8 @@ Representation of the joints is then shown with primitives in unity.
 
 <!-- Setup -->
 ## Setup
-- clone project
-- in python_scripts install dependencies [$ pip install -r requirements.txt]
+- Clone project
+- In python_scripts install dependencies [$ pip install -r requirements.txt]
 
 <!-- USAGE EXAMPLES -->
 ## Usage
