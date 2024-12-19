@@ -33,37 +33,36 @@ Representation of the joints is then shown with primitives in unity.
 
 <section style="display: grid; grid-template-columns: 1fr; gap: 20px; text-align: start;">
     <div style="color: white; padding: 10px; width: 100%; height: 100%; margin: 0;">
-        <h3>Scanning</h3>
+        <h3>Python: Pose Estimation</h3>
         <ul>
-            <li style="padding: 5px; margin: 5px;">Real-time generation of Meshes (yellow)</li>
-            <li style="padding: 5px; margin: 5px;">Dynamic NavMesh Generation (green)</li>
-            <li style="padding: 5px; margin: 5px;">Anchor Placement as Navigation Target (green cube)</li>
+            <li style="padding: 5px; margin: 5px;">Manage I/O Camera Image Stream</li>
+            <li style="padding: 5px; margin: 5px;">Estimate Pose</li>
         </ul>
     </div>
     <div style="color: white; padding: 10px; width: 95%; height: 96%; margin: 0;">
         <img src="python_classes.png" alt="Screenshot1" width="900" height="600"></img>
     </div>
         <div style="color: white; padding: 10px; width: 100%; height: 100%; margin: 0;">
-        <h3>Scanning</h3>
+        <h3>Unity </h3>
         <ul>
-            <li style="padding: 5px; margin: 5px;">Real-time generation of Meshes (yellow)</li>
-            <li style="padding: 5px; margin: 5px;">Dynamic NavMesh Generation (green)</li>
-            <li style="padding: 5px; margin: 5px;">Anchor Placement as Navigation Target (green cube)</li>
+            <li style="padding: 5px; margin: 5px;">Joints and Pose rendering</li>
+            <li style="padding: 5px; margin: 5px;">Landmark to Joint Mapping</li>
+            <li style="padding: 5px; margin: 5px;">Networking with Python Interface</li>
         </ul>
     </div>
     <div style="color: white; padding: 10px; width: 100%; height: 100%; margin: 0;">
         <img src="csharp_classes.png" alt="Screenshot1" width="900" height="500"></img>
+        <div style="color: white; padding: 10px; width: 100%; height: 100%; margin: 0;">
+        <h3>App</h3>
+        <ul>
+            <li style="padding: 5px; margin: 5px;">Left side real-time Pose estimation on webcam images</li>
+            <li style="padding: 5px; margin: 5px;">Right Side: Landmark to Pose Rendering</li>
+            <li style="padding: 5px; margin: 5px;">Anchor Placement as Navigation Target (green cube)</li>
+        </ul>
+    </div>
     </div>
         <div style="color: white; padding: 10px; width: 100%; height: 100%; margin: 0;">
         <img src="app_running.png" alt="Screenshot1" width="900" height="500"></img>
-    </div>
-        <div style="color: white; padding: 10px; width: 100%; height: 100%; margin: 0;">
-        <h3>Scanning</h3>
-        <ul>
-            <li style="padding: 5px; margin: 5px;">Real-time generation of Meshes (yellow)</li>
-            <li style="padding: 5px; margin: 5px;">Dynamic NavMesh Generation (green)</li>
-            <li style="padding: 5px; margin: 5px;">Anchor Placement as Navigation Target (green cube)</li>
-        </ul>
     </div>
 </section>
 
