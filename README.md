@@ -1,10 +1,3 @@
-  <!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/Lakusan/invisnav">
-    <img src="README_assets/invisnav_icon.png" alt="Logo" width="80" height="80">
-  </a>
-
 <h3 align="center">
 <span style="color: #84cc16;">Realtime Motion Capturing in Unity Engine</span>
 
